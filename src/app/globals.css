@@ -1,33 +1,10 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+main {
+  min-height: 100vh;
 }
 
 a {
@@ -35,8 +12,58 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* ベースカラー(バックグランド) */
+.bg-danger {
+  background-color: #f5004f;
+}
+
+.bg-warning {
+  background-color: #ffaf00;
+}
+
+.bg-caution {
+  background-color: #f9e400;
+}
+
+.bg-info {
+  background-color: #7c00fe;
+}
+
+.bg-base-1 {
+  background-color: #dbfff3;
+}
+
+.bg-base-2 {
+  background-color: #31d8d3;
+}
+
+.bg-base-3 {
+  background-color: #60dfb4;
+}
+
+.bg-base-4 {
+  background-color: #5d5d5d;
+}
+
+.bg-base-5 {
+  background-color: #00aaff;
+}
+
+.bg-text {
+  background-color: #2c2c2c;
+}
+
+.bg-white {
+  background-color: #eeeeee;
+}
+
+/* ボタン用 */
+.btn-post {
+  background-color: #60dfb4;
+}
+.btn-post:hover {
+  background-color: #47a283;
+}
+.btn-post:active {
+  background-color: #47a283 !important; /* !importantでこのCSSを優先させています */
 }
