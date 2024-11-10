@@ -1,7 +1,11 @@
+"use client"
 import Image from "next/image";
 import styles from "./page.module.css";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session} = useSession();
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -89,6 +93,10 @@ export default function Home() {
           />
           Go to nextjs.org →
         </a>
+        <button onClick={() => signIn()}>ログイン</button>
+        <button onClick={() => signOut()}>ログアウト</button>
+        <button onClick={() => console.log(session)}>確認</button>
+        <div>{session ? <div>Name:{session.user?.name}Email:{session.user?.email}</div> : <div>None</div>}</div>
       </footer>
     </div>
   );
