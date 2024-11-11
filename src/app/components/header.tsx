@@ -11,7 +11,7 @@ export default function Header(){
       <div className="row">
         <div className="col-3 ms-2 d-flex align-items-center"><Logo/></div>
         <form role="search" className="col-5 d-flex align-items-center justify-content-center">
-            <button type="submit" className="mx-5 btn rounded-circle shadow">
+            <button type="submit" className="mx-5 btn rounded-circle shadow bg-white">
               <i className="bi bi-search"></i>
             </button>
             <input type="search" className="form-control rounded-pill shadow" placeholder="検索" aria-label="Search"/>
