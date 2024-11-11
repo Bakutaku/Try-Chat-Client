@@ -13,6 +13,6 @@ interface Params {
  */
 export default function Logo({width = "178px",height = "82px", responsive}:Params){
   return (
-    <Image width={178} height={82} style={{ width: width, height: height }} src="Try-Chat_icon.svg" alt={"Logo"} layout={responsive? "responsive" : ""} priority/>
+    <Image className="svg-shadow" width={178} height={82} style={{ width: width, height: height }} src="Try-Chat_icon.svg" alt={"Logo"} layout={responsive? "responsive" : ""} priority/>
   );
 }

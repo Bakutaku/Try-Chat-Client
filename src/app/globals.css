@@ -67,3 +67,8 @@ a {
 .btn-post:active {
   background-color: #47a283 !important; /* !importantでこのCSSを優先させています */
 }
+
+/* 影 */
+.svg-shadow {
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
+}
