@@ -32,7 +32,9 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
               {/* メイン */}
               <div className="col-8">
                 <main className="container">
-                  {children}
+                  <div className="mt-5">
+                    {children}
+                  </div>
                 </main>
               </div>  
             </div>
