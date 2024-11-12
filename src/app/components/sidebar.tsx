@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import HamburgerMenu from "./hamburgerMenu";
+import ServerBar from "./serverBar";
 
 /**
  * サイドバー
@@ -32,21 +33,7 @@ export default function Sidebar() {
           </li>
         </ul>
         <div className="border-bottom border-3 border-black border-opacity-50"></div>
-        <ul className="fs-3 bg-base-4 list-group rounded-pill server m-auto mt-2" style={{height:"20rem",width:"4rem"}}>
-          <li className="bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center" style={{width:"3rem",height:"3rem"}}>
-            <div>S</div>
-          </li>
-          <li className="bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center" style={{width:"3rem",height:"3rem"}}>
-            <div>S</div>
-          </li>
-          <li className="bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center" style={{width:"3rem",height:"3rem"}}>
-            <div>S</div>
-          </li>
-          <li className="mt-auto bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center" style={{width:"3rem",height:"3rem"}}>
-            <div>+</div>
-        </li>
-        </ul> 
-        
+        <ServerBar />
       </div>
     </nav>
 );

@@ -89,3 +89,6 @@ a {
   -ms-overflow-style: none;
   list-style-type: none;
 }
+.server-add {
+  border: 1px solid #60dfb4;
+}
