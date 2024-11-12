@@ -92,3 +92,9 @@ a {
 .server-add {
   border: 1px solid #60dfb4;
 }
+
+/* ツールチップのcss */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
