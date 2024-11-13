@@ -4,6 +4,7 @@ import HamburgerMenu from "./hamburgerMenu";
 import ServerBar from "./serverBar";
 import Tooltip from "./tooltip";
 import { motion, Variants } from "framer-motion";
+import Link from "next/link";
 
 /**
  * サイドバー
@@ -40,18 +41,26 @@ export default function Sidebar() {
           <div className="border-bottom border-3 border-black border-opacity-50"></div>
           {/* 選択欄 */}
           <ul className="fs-1 nav flex-column d-flex align-items-center">
-            <li className="nav-item">
-              <Tooltip text="Home"><i className="bi bi-house-door"></i></Tooltip>
-            </li>
-            <li className="nav-item">
-              <Tooltip text="Mail(準備中)"><i className="bi bi-envelope"></i></Tooltip>
-            </li>
-            <li className="nav-item">
-              <Tooltip text="Friend(準備中)"><i className="bi bi-people"></i></Tooltip>
-            </li>
-            <li className="nav-item">
-              <Tooltip text="Server(準備中)"><i className="bi bi-hdd-stack"></i></Tooltip>
-            </li>
+            <Link href="/">
+              <li className="nav-item">
+                <Tooltip text="Home"><i className="bi bi-house-door"></i></Tooltip>
+              </li>
+            </Link>
+            <Link href="/mail">
+              <li className="nav-item">
+                <Tooltip text="Mail(準備中)"><i className="bi bi-envelope"></i></Tooltip>
+              </li>
+            </Link>
+            <Link href="/friend">
+              <li className="nav-item">
+                <Tooltip text="Friend(準備中)"><i className="bi bi-people"></i></Tooltip>
+              </li>
+            </Link>
+            <Link href="/server">
+              <li className="nav-item">
+                <Tooltip text="Server(準備中)"><i className="bi bi-hdd-stack"></i></Tooltip>
+              </li>
+            </Link>
           </ul>
           <div className="border-bottom border-3 border-black border-opacity-50"></div>
           <ServerBar />
