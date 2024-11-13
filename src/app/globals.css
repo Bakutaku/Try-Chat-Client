@@ -28,6 +28,9 @@ a {
 .bg-info {
   background-color: #7c00fe;
 }
+.text-info {
+  color: #7c00fe !important;
+}
 
 .bg-base-1 {
   background-color: #dbfff3;
@@ -72,6 +75,9 @@ a {
 .svg-shadow {
   filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
 }
+.text-shadow {
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
 
 /* サイドバー */
 .sidebar {
@@ -97,4 +103,43 @@ a {
 .tooltip {
   position: relative;
   display: inline-block;
+}
+
+/* グラデーションの影 */
+.box {
+  /* Required properties */
+  position: relative;
+}
+
+.box:before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(-45deg, #00aaff 0%, #60dfb4 100%);
+  transform: translate3d(0px, 20px, 0) scale(0.95);
+  filter: blur(60px);
+  opacity: var(0.7);
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+/* 
+* Prevents issues when the parent creates a 
+* stacking context. (For example, using the transform
+* property )
+*/
+.box::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: inherit;
 }
