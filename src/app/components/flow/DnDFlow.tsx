@@ -1,57 +1,74 @@
-"use client"
+"use client";
 
-import { addEdge, Background, BackgroundVariant, Connection, Controls, Edge, MiniMap, ReactFlow, ReactFlowProvider, useEdgesState, useNodesState, useReactFlow } from "@xyflow/react";
-import { useCallback, useMemo, useRef } from "react";
+import {
+  addEdge,
+  Background,
+  BackgroundVariant,
+  Connection,
+  Controls,
+  Edge,
+  MiniMap,
+  ReactFlow,
+  ReactFlowProvider,
+  useEdgesState,
+  useNodesState,
+  useReactFlow,
+} from "@xyflow/react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import TestNode from "./node/testNode";
 import { DnDProvider, useDnD } from "./DnDContext";
 import ContentSidebar from "./contentSidebar";
 import NodeInspector from "./debug";
-
-
+import MarkdownNode from "./node/markdownNode";
+import { v4 as uuidv4 } from "uuid";
+import CommentNode from "./node/commentNode";
 
 // 引数
-interface Props{
-  miniMap? : boolean
-  debug? : boolean
-  controls? : boolean
+interface Props {
+  miniMap?: boolean;
+  debug?: boolean;
+  controls?: boolean;
 }
-
 
 // 初期設定
 const initialNodes = [
   {
-    id: '1',
-    type: 'test',
-    data: { label: 'input node' },
+    id: "1",
+    type: "text",
+    data: { label: "input node", edit: true },
     position: { x: 250, y: 5 },
+    deletable: false,
   },
 ];
-
-
-// ノードIDのカウンタ
-let id = 0;
+// エッジオプション
+const defaultEdgeOptions = { animated: true };
 
 // ノードID生成の関数
-const getID = () => `try${id++}`;
+const getID = () => uuidv4();
 
-const DnDFlow:React.FC<Props> = ({miniMap,debug,controls}) => {
+const DnDFlow: React.FC<Props> = ({ miniMap, debug, controls }) => {
   const reactFlowWrapper = useRef<HTMLDivElement | null>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);   // ノードの管理を行うもの
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);   // エッジの管理を行うもの
-  const nodeType = useMemo(() => ({test:TestNode}),[]);   // カスタムノードを追加するもの
-  const { screenToFlowPosition } = useReactFlow();  // スクリーン座標をReact Flow座標に変換する関数
-  const [type] = useDnD();  // 現在ドラッグ中のノードタイプを取得
-  
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes); // ノードの管理を行うもの
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]); // エッジの管理を行うもの
+  const [show, setShow] = useState(true); // 表示管理
+  const nodeType = useMemo(
+    () => ({ test: TestNode, text: MarkdownNode, comment: CommentNode }),
+    []
+  ); // カスタムノードを追加するもの
+  const { screenToFlowPosition } = useReactFlow(); // スクリーン座標をReact Flow座標に変換する関数
+  const [type] = useDnD(); // 現在ドラッグ中のノードタイプを取得
+
   // ノードが接続された際に呼ばれるコールバック
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)), // 新しいエッジを追加する
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
-  const onDragOver = useCallback((event : React.DragEvent) => {
+  const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
-  },[]);
+  }, []);
 
   // ドロップイベントの処理。ノードを追加する
   const onDrop = useCallback(
@@ -71,19 +88,46 @@ const DnDFlow:React.FC<Props> = ({miniMap,debug,controls}) => {
       // 新しいノードの作成
       const newNode = {
         id: getID(), // 新しいIDを生成
-        type:type, // ドラッグされたタイプを使用
+        type: type, // ドラッグされたタイプを使用
         position, // 新しい位置
-        data: { label: `${type} node` }, // ラベルとしてタイプを設定
+        data: { label: `${type} node`, edit: true }, // ラベルとしてタイプを設定
+        deletable: true, // 削除できるか
       };
 
       // 新しいノードをノードリストに追加
       setNodes((nds) => nds.concat(newNode));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [screenToFlowPosition, type], // screenToFlowPositionとtypeが変更される度に再評価される
+    [screenToFlowPosition, type] // screenToFlowPositionとtypeが変更される度に再評価される
   );
+
+  // 実際の表示に切り替える
+  const nodeShowChange = () => {
+    setNodes(
+      nodes.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          edit: !show,
+        },
+      }))
+    );
+    setShow(!show);
+  };
+
+  // reset
+  const nodeShowReset = () => {
+    nodes.map((node) => ({
+      ...node,
+      data: {
+        ...node.data,
+        edit: false,
+      },
+    }));
+  };
+  // TODO 投稿ボタンを操作画面に埋め込む！
   return (
-    <div className="w-100 h-100">
+    <div className="d-flex w-100 h-100" ref={reactFlowWrapper}>
       <ReactFlow
         nodeTypes={nodeType}
         nodes={nodes}
@@ -93,20 +137,31 @@ const DnDFlow:React.FC<Props> = ({miniMap,debug,controls}) => {
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        defaultEdgeOptions={defaultEdgeOptions}
         fitView
       >
-        <Background variant={BackgroundVariant.Dots}  />{/*背景*/}
-        {controls && <Controls />}{/*左下に出てくるボタン*/}
-        {miniMap && <MiniMap />}{/*ミニマップ*/}
-        {debug && <NodeInspector />}{/* デバック用 */}
+        <Background variant={BackgroundVariant.Lines} />
+        {/*背景*/}
+        {controls && <Controls />}
+        {/*左下に出てくるボタン*/}
+        {miniMap && <MiniMap />}
+        {/*ミニマップ*/}
+        {debug && <NodeInspector />}
+        {/* デバック用 */}
       </ReactFlow>
-      <ContentSidebar/>
+      <ContentSidebar />
+      <button
+        className="btn btn-change text-white position-absolute"
+        onClick={nodeShowChange}
+      >
+        切り替え
+      </button>
     </div>
   );
-}
+};
 
 // アプリケーション全体のコンポーネント。ReactFlowProviderとDnDProviderをラップして、DnDFlowコンポーネントを表示
-const DnDFlowEdit: React.FC<Props> = ({miniMap,debug,controls}) => (
+const DnDFlowEdit: React.FC<Props> = ({ miniMap, debug, controls }) => (
   <ReactFlowProvider>
     <DnDProvider>
       <DnDFlow miniMap={miniMap} debug={debug} controls={controls} />

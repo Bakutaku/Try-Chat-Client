@@ -2,34 +2,49 @@
 
 import { useDnD } from "./DnDContext";
 
-
 /**
  * ノード一覧を配置するサイドバー
  */
-export default function ContentSidebar(){
-    const [_,setType] = useDnD();
+export default function ContentSidebar() {
+  const [_, setType] = useDnD();
 
-    // ドラッグの設定?
-    const onDragStart = (event : React.DragEvent<HTMLDivElement>,nodeType:string) => {
-        setType(nodeType);  // ドラックされたノードタイプを設定
-        event.dataTransfer.effectAllowed = "move"   // ドラック効果を設定
-    };
+  // ドラッグの設定?
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    nodeType: string
+  ) => {
+    setType(nodeType); // ドラックされたノードタイプを設定
+    event.dataTransfer.effectAllowed = "move"; // ドラック効果を設定
+  };
 
-    return (
-        <div>
-            ノード一覧だよ
-            <div className="bg-base-4"
-                onDragStart={(event) => onDragStart(event,"default")}
-                draggable
-            >
-                ノード1
-            </div>
-            <div className="bg-base-4"
-                onDragStart={(event) => onDragStart(event,"test")}
-                draggable
-            >
-                ノード2
-            </div>
+  return (
+    <div
+      className="border-start border-5 border-edit"
+      style={{ width: "10vw" }}
+    >
+      <div className="card w-100">
+        <div className="card-header">ノード一覧</div>
+        <div className="card-body">
+          <div className="card-title">
+            ドラック&ドロップでノードを追加しよう！
+          </div>
         </div>
-    );
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            <div onDragStart={(event) => onDragStart(event, "text")} draggable>
+              テキストボックス
+            </div>
+          </li>
+          <li className="list-group-item">
+            <div
+              onDragStart={(event) => onDragStart(event, "comment")}
+              draggable
+            >
+              コメント
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 }

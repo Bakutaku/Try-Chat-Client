@@ -1,5 +1,4 @@
 import { Handle, NodeProps, Position } from "@xyflow/react";
-import MarkdownEditor from "../../markdown/markdownEditor";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
@@ -9,8 +8,8 @@ import "github-markdown-css/github-markdown.css";
 export default function TestNode({ data, isConnectable }: NodeProps) {
   const [text, setText] = useState("# Hello");
   return (
-    <div className="react-flow__node_default">
-      <textarea onChange={(e) => setText(e.target.value)}>{text}</textarea>
+    <div className="react-flow_node_default">
+      <textarea onChange={(e) => setText(e.target.value)} value={text} />
       <ReactMarkdown remarkPlugins={[remarkGfm, breaks]}>{text}</ReactMarkdown>
       {data.label ? <div>{data.label as string}</div> : ""}
       <Handle

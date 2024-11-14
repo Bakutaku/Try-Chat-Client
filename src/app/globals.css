@@ -70,6 +70,20 @@ a {
 .btn-post:active {
   background-color: #47a283 !important; /* !importantでこのCSSを優先させています */
 }
+.btn-change {
+  background-color: #00aaff;
+}
+.btn-change:hover {
+  background-color: #0089ce;
+}
+.btn-change:active {
+  background-color: #003c5a !important; /* !importantでこのCSSを優先させています */
+}
+
+/* ボーダー */
+.border-edit {
+  border-color: #00aaff !important;
+}
 
 /* 影 */
 .svg-shadow {
