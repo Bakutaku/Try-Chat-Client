@@ -19,15 +19,15 @@ export default function CommentNode({ data }: NodeProps) {
   return (
     <div style={{ zIndex: 9999 }}>
       {data.edit ? (
-        <div>
+        <div className="card p-2">
           <input
-            className="form-control bg-base-1"
+            className="form-control bg-base-1 fs-2"
             onChange={onChange}
             value={text}
           />
         </div>
       ) : (
-        <div>{text}</div>
+        <div className="fs-2">{text}</div>
       )}
     </div>
   );

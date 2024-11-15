@@ -19,7 +19,7 @@ export default function ContentSidebar() {
 
   return (
     <div
-      className="border-start border-5 border-edit"
+      className="border-start border-3 border-edit"
       style={{ width: "10vw" }}
     >
       <div className="card w-100">

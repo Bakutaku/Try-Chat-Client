@@ -42,7 +42,7 @@ export default function MarkdownNode({ data, isConnectable }: NodeProps) {
           className="btn btn-change text-white"
           onClick={() => setIsMark(!isMark)}
         >
-          表示切替
+          表示切り替え
         </button>
       ) : (
         ""

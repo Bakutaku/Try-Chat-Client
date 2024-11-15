@@ -17,10 +17,10 @@ export default function Post() {
         </div>
       </div>
       <div
-        className="border border-5 rounded-5 shadow border-edit"
+        className="border border-3 rounded-5 shadow border-edit "
         style={{ width: "70vw", height: "70vh" }}
       >
-        <DnDFlowEdit miniMap controls debug />
+        <DnDFlowEdit miniMap controls />
       </div>
     </div>
   );
