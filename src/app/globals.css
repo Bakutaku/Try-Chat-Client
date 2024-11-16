@@ -157,3 +157,15 @@ a {
   background: inherit;
   border-radius: inherit;
 }
+
+pre {
+  background-color: #2d2d2d; /* 背景色 */
+  color: #ffffff; /* 文字色 */
+  font-family: "Courier New", Courier, monospace; /* 等幅フォント */
+  font-size: 14px; /* フォントサイズ */
+  line-height: 1.5; /* 行間 */
+  padding: 16px; /* 内側の余白 */
+  border-radius: 8px; /* 角を丸める */
+  overflow-x: auto; /* 横スクロールを有効化 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+}

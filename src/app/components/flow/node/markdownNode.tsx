@@ -1,5 +1,5 @@
-import { Handle, NodeProps, Position } from "@xyflow/react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Handle, NodeProps, NodeResizer, Position } from "@xyflow/react";
+import { ChangeEvent, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
@@ -8,8 +8,12 @@ import "github-markdown-css/github-markdown.css";
 /**
  * マークダウンのノード
  */
-export default function MarkdownNode({ data, isConnectable }: NodeProps) {
-  const [text, setText] = useState("# Hello World"); // 入力値
+export default function MarkdownNode({
+  data,
+  isConnectable,
+  selected,
+}: NodeProps) {
+  const [text, setText] = useState(data.label as string); // 入力値
   const [isMark, setIsMark] = useState(data.edit); // 表示切替
 
   // 入力のイベント
@@ -18,25 +22,10 @@ export default function MarkdownNode({ data, isConnectable }: NodeProps) {
     data.text = e.target.value;
     // 更新
     setText(e.target.value);
-
-    // リサイズ
-    handleResize();
   };
-
-  // 入力欄の自動調整
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const handleResize = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"; // 一度高さをリセット
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 内容に合わせた高さに変更
-    }
-  };
-  useEffect(() => {
-    handleResize(); // 初期呼び出し
-  }, [isMark]);
 
   return (
-    <div className="card p-3" style={{ minWidth: "500px" }}>
+    <div className="card p-3 h-100" style={{ minWidth: "500px" }}>
       {data.edit ? (
         <button
           className="btn btn-change text-white"
@@ -47,33 +36,43 @@ export default function MarkdownNode({ data, isConnectable }: NodeProps) {
       ) : (
         ""
       )}
-      <div className="mt-2 w-100">
+      <div className="mt-2 w-100 h-100">
         {isMark && data.edit ? (
           <textarea
-            className="overflow-hidden form-control w-100"
-            ref={textareaRef}
+            className="overflow-hidden form-control w-100 h-100"
             value={text}
             onChange={onChange}
             contentEditable
             style={{ whiteSpace: "nowrap", resize: "none" }}
           />
         ) : (
-          <ReactMarkdown remarkPlugins={[remarkGfm, breaks]}>
-            {text}
-          </ReactMarkdown>
+          <div className="h-100">
+            <ReactMarkdown remarkPlugins={[remarkGfm, breaks]}>
+              {text}
+            </ReactMarkdown>
+          </div>
         )}
       </div>
       <Handle
         id="a"
         type="target"
+        className="handle"
+        style={{ width: 10, height: 10 }}
         position={Position.Top}
         isConnectable={isConnectable}
       />
       <Handle
         id="b"
         type="source"
+        style={{ width: 10, height: 10 }}
         position={Position.Bottom}
         isConnectable={isConnectable}
+      />
+      <NodeResizer
+        minWidth={100}
+        minHeight={30}
+        isVisible={selected}
+        lineStyle={{ borderRadius: "8px", border: "5px solid #00aaff" }}
       />
     </div>
   );
