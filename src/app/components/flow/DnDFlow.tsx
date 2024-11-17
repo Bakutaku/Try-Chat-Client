@@ -9,6 +9,7 @@ import {
   Edge,
   MiniMap,
   Node,
+  Panel,
   ReactFlow,
   ReactFlowProvider,
   useEdgesState,
@@ -160,12 +161,11 @@ const DnDFlow: React.FC<Props> = ({
         {/* デバック用 */}
       </ReactFlow>
       <ContentSidebar />
-      <button
-        className="btn btn-change text-white position-absolute"
-        onClick={nodeShowChange}
-      >
-        切り替え
-      </button>
+      <Panel position="top-left">
+        <button className="btn btn-change text-white" onClick={nodeShowChange}>
+          切り替え
+        </button>
+      </Panel>
     </div>
   );
 };

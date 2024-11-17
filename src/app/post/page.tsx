@@ -9,20 +9,22 @@ const initialNodes: Node[] = [
   {
     id: "1",
     type: "inputTitle",
-    data: { label: "質問内容", edit: true },
+    data: { label: "タイトル", edit: true },
     position: { x: 290, y: -250 },
     deletable: false,
   },
   {
     id: "2",
     type: "text",
-    data: { label: "説明", edit: true },
+    data: { label: "# 説明", edit: true },
     position: { x: 250, y: 5 },
     deletable: false,
   },
 ];
 // エッジ
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+const initialEdges = [
+  { id: "e1-2", source: "1", target: "2", deletable: false },
+];
 
 /**
  * 投稿ページ
@@ -72,7 +74,7 @@ export default function Post() {
         </div>
       </div>
       <div
-        className="border border-3 rounded-5 shadow border-edit "
+        className="border border-3 rounded-5 shadow border-edit bg-flow"
         style={{ width: "70vw", height: "70vh" }}
       >
         <DnDFlowEdit
