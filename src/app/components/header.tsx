@@ -31,7 +31,10 @@ export default function Header() {
           />
         </form>
         <div className="col-3 d-flex align-items-center justify-content-end">
-          <Link href="question/post" className="btn btn-post text-white shadow">
+          <Link
+            href="/question/post"
+            className="btn btn-post text-white shadow"
+          >
             <i className="bi bi-pencil-square"></i>投稿
           </Link>
           <Image
