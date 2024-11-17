@@ -1,59 +1,85 @@
-"use client"
+"use client";
 
-import { addEdge, Background, BackgroundVariant, Controls, MiniMap, ReactFlow, useEdgesState, useNodesState } from "@xyflow/react";
-import { useCallback, useMemo } from "react";
+import { Controls, Edge, MiniMap, Node, ReactFlow } from "@xyflow/react";
 import NodeInspector from "./debug";
 import TestNode from "./node/testNode";
+import MarkdownNode from "./node/markdownNode";
+import CommentNode from "./node/commentNode";
+import InputNode from "./node/inputNode";
+import { useMemo } from "react";
 
 // 引数
-interface Props{
-    miniMap? : boolean
-    debug? : boolean
-    controls? : boolean
+interface Props {
+  miniMap?: boolean;
+  debug?: boolean;
+  controls?: boolean;
+  initialNodes?: Node[]; // 初期値
+  initialEdges?: Edge[]; // 初期値
 }
 
-
-
-// 初期設定
-// ノード
-const initialNodes = [
-    { id: '1',type: "test", position: { x: 0, y: 0 }, data: { label: 'This is Node.' } },
-    { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
-// エッジ
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 // エッジオプション
 const defaultEdgeOptions = { animated: true };
-
 
 /**
  * フローチャートの作業パーツ
  */
-export default function Edit({miniMap,debug,controls}:Props){
-    // React Flowを動かす準備
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);   // ノードの管理を行うもの
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);   // エッジの管理を行うもの
-    const nodeType = useMemo(() => ({test:TestNode}),[]);   // カスタムノードを追加するもの
-    const onConnect = useCallback(  // エッジを追加するもの
-        (params) => setEdges((eds) => addEdge(params, eds)),
-        [setEdges],
-    );
+export default function Edit({
+  miniMap,
+  debug,
+  controls,
+  initialNodes = [],
+  initialEdges = [],
+}: Props) {
+  // React Flowを動かす準備
+  const nodeType = useMemo(
+    // カスタムノードを追加するもの
+    () => ({
+      test: TestNode,
+      text: MarkdownNode,
+      comment: CommentNode,
+      inputTitle: InputNode,
+    }),
+    []
+  );
 
-    return(
-        <ReactFlow
-            nodeTypes={nodeType}
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            defaultEdgeOptions={defaultEdgeOptions}
-        >
-            <Background variant={BackgroundVariant.Dots}  />{/*背景*/}
-            {controls && <Controls />}{/*左下に出てくるボタン*/}
-            {miniMap && <MiniMap />}{/*ミニマップ*/}
-            {debug && <NodeInspector />}{/* デバック用 */}
-        </ReactFlow>
-    );
+  // ノードを修正不可にする
+  const nodeChange = () => {
+    return initialNodes.map((node) => ({
+      ...node,
+      data: {
+        ...node.data,
+        edit: false,
+      },
+      deletable: false,
+    }));
+  };
+  // エッジを修正不可にする
+  const edgeChange = () => {
+    return initialEdges.map((edge) => ({
+      ...edge,
+      deletable: false,
+    }));
+  };
+
+  // 変換
+  initialNodes = nodeChange();
+  initialEdges = edgeChange();
+
+  return (
+    <ReactFlow
+      nodeTypes={nodeType}
+      nodes={initialNodes}
+      edges={initialEdges}
+      defaultEdgeOptions={defaultEdgeOptions}
+      fitView
+    >
+      {/*背景*/}
+      {controls && <Controls />}
+      {/*左下に出てくるボタン*/}
+      {miniMap && <MiniMap />}
+      {/*ミニマップ*/}
+      {debug && <NodeInspector />}
+      {/* デバック用 */}
+    </ReactFlow>
+  );
 }
