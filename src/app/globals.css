@@ -70,6 +70,20 @@ a {
 .btn-post:active {
   background-color: #47a283 !important; /* !importantでこのCSSを優先させています */
 }
+.btn-change {
+  background-color: #00aaff;
+}
+.btn-change:hover {
+  background-color: #0089ce;
+}
+.btn-change:active {
+  background-color: #003c5a !important; /* !importantでこのCSSを優先させています */
+}
+
+/* ボーダー */
+.border-edit {
+  border-color: #00aaff !important;
+}
 
 /* 影 */
 .svg-shadow {
@@ -142,4 +156,20 @@ a {
   left: 0;
   background: inherit;
   border-radius: inherit;
+}
+
+pre {
+  background-color: #2d2d2d; /* 背景色 */
+  color: #ffffff; /* 文字色 */
+  font-family: "Courier New", Courier, monospace; /* 等幅フォント */
+  font-size: 14px; /* フォントサイズ */
+  line-height: 1.5; /* 行間 */
+  padding: 16px; /* 内側の余白 */
+  border-radius: 8px; /* 角を丸める */
+  overflow-x: auto; /* 横スクロールを有効化 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+}
+
+.bg-flow {
+  background-color: #f7f7f7;
 }

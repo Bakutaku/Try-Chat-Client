@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./globals.css";
+import "@xyflow/react/dist/style.css";
 import { SessionProvider } from "next-auth/react";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Sidebar from "./components/sidebar";
+
 
 export const metadata: Metadata = {
   title: "Try-Chat",
