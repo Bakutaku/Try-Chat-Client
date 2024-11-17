@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import DnDFlowEdit from "../components/flow/DnDFlow";
 import { Edge, Node } from "@xyflow/react";
+import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 
 // 初期設定
 const initialNodes: Node[] = [
