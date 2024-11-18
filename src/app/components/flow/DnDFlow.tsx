@@ -99,7 +99,7 @@ const DnDFlow: React.FC<Props> = ({
         id: getID(), // 新しいIDを生成
         type: type, // ドラッグされたタイプを使用
         position, // 新しい位置
-        data: { edit: true }, // ラベルとしてタイプを設定
+        data: { edit: true, resizer: true }, // ラベルとしてタイプを設定
         deletable: true, // 削除できるか
       };
 

@@ -1,6 +1,6 @@
 "use client";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
-import Edit from "@/app/components/flow/edit";
+import FlowView from "@/app/components/flow/flowView";
 import { Edge, Node } from "@xyflow/react";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ const initialNodes: Node[] = [
   {
     id: "1",
     type: "inputTitle",
-    data: { label: "タイトル", edit: true },
+    data: { label: "タイトル", edit: true, resizer: false },
     position: { x: 290, y: -250 },
     deletable: false,
     draggable: false, // ドラックを無効にする処理
@@ -24,7 +24,7 @@ const initialNodes: Node[] = [
   {
     id: "2",
     type: "text",
-    data: { label: "# 説明", edit: true },
+    data: { label: "# 説明", edit: true, resizer: false },
     position: { x: 250, y: 5 },
     deletable: false,
     draggable: false,
@@ -50,6 +50,31 @@ export default function QuestionItemPage({ params }: Params) {
 
   // TODO 既存の質問の操作をすべて無効にするdraggable: false,などを追加する
 
+  // ノードの操作を無効にする処理
+  const nodeDeletable = (nodes_p: Node[]) => {
+    return nodes_p.map((n) => ({
+      ...n,
+      data: {
+        ...n.data,
+        edit: false,
+        resizer: false,
+      },
+      deletable: false,
+      draggable: false,
+    }));
+  };
+  // エッジの操作を無効にする処理
+  const edgeDeletable = (edges_p: Edge[]) => {
+    return edges_p.map((e) => ({
+      ...e,
+      deletable: false,
+    }));
+  };
+
+  // 無効化
+  const defaultNode = nodeDeletable(initialNodes);
+  const defaultEdge = edgeDeletable(initialEdges);
+
   return (
     <div className="box rounded-4 bg-white p-3 mt-3">
       <div>
@@ -57,22 +82,26 @@ export default function QuestionItemPage({ params }: Params) {
         <div>Username</div>
       </div>
       <div
-        className="border border-3 rounded-5 shadow border-edit-item bg-flow"
-        style={{ height: "90vh" }}
+        className="border border-3 rounded-5 shadow border-edit-item bg-flow mx-5"
+        style={{ height: "80vh" }}
       >
-        <Edit initialNodes={initialNodes} initialEdges={initialEdges} debug />
+        <FlowView
+          initialNodes={defaultNode}
+          initialEdges={defaultEdge}
+          controls
+        />
       </div>
       <div className="mt-5 h1">コメント</div>
       <div
-        className="border border-3 rounded-5 shadow border-edit bg-flow"
-        style={{ height: "90vh" }}
+        className="border border-3 rounded-5 shadow border-edit bg-flow mx-5"
+        style={{ height: "80vh" }}
       >
         <DnDFlowEdit
           getValue={getValue}
           miniMap
           controls
-          initialNodes={initialNodes}
-          initialEdges={initialEdges}
+          initialNodes={defaultNode}
+          initialEdges={defaultEdge}
         />
       </div>
     </div>

@@ -9,14 +9,14 @@ const initialNodes: Node[] = [
   {
     id: "1",
     type: "inputTitle",
-    data: { label: "タイトル", edit: true },
+    data: { label: "タイトル", edit: true, resizer: true },
     position: { x: 290, y: -250 },
     deletable: false,
   },
   {
     id: "2",
     type: "text",
-    data: { label: "# 説明", edit: true },
+    data: { label: "# 説明", edit: true, resizer: true },
     position: { x: 250, y: 5 },
     deletable: false,
   },

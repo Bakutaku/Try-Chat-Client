@@ -18,12 +18,12 @@ interface Props {
 }
 
 // エッジオプション
-const defaultEdgeOptions = { animated: true };
+const defaultEdgeOptions = { style: { strokeWidth: 10 } };
 
 /**
  * フローチャートの作業パーツ
  */
-export default function Edit({
+export default function FlowView({
   miniMap,
   debug,
   controls,
@@ -49,6 +49,7 @@ export default function Edit({
       data: {
         ...node.data,
         edit: false,
+        resizer: false,
       },
       deletable: false,
     }));
@@ -71,6 +72,9 @@ export default function Edit({
       nodes={initialNodes}
       edges={initialEdges}
       defaultEdgeOptions={defaultEdgeOptions}
+      fitViewOptions={{ padding: 1 }}
+      minZoom={0.5}
+      maxZoom={2}
       fitView
     >
       {/*背景*/}
