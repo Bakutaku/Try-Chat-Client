@@ -22,7 +22,7 @@ export default function CommentNode({ data, selected }: NodeProps) {
 
   return (
     <div style={{ zIndex: 9999 }}>
-      <UserBar />
+      <UserBar name={data.name as string} icon={data.icon as string} />
       {data.edit && data.resizer ? (
         <div className="card p-2 h-100 w-100">
           <div className="fs-1">#</div>

@@ -26,7 +26,7 @@ export default function InputNode({
 
   return (
     <>
-      <UserBar />
+      <UserBar name={data.name as string} icon={data.icon as string} />
       <div className="card fs-2 p-3 fw-bold w-100">
         {data.label ? (
           <div className="w-100">{data.label as string}</div>

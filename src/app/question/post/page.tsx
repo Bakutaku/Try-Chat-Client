@@ -3,28 +3,7 @@
 import { useState } from "react";
 import { Edge, Node } from "@xyflow/react";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
-
-// 初期設定
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    type: "inputTitle",
-    data: { label: "タイトル", edit: true, resizer: true },
-    position: { x: 290, y: -250 },
-    deletable: false,
-  },
-  {
-    id: "2",
-    type: "text",
-    data: { label: "# 説明", edit: true, resizer: true },
-    position: { x: 250, y: 5 },
-    deletable: false,
-  },
-];
-// エッジ
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", deletable: false },
-];
+import { useSession } from "next-auth/react";
 
 /**
  * 投稿ページ
@@ -32,6 +11,56 @@ const initialEdges = [
 export default function Post() {
   const [nodes, setNodes] = useState<Node[]>([]); // 入力内容格納用
   const [edges, setEdges] = useState<Edge[]>([]);
+
+  const { data: session, status } = useSession(); // セッション取得
+
+  // session読み込み中の場合
+  if (status === "loading") {
+    return (
+      <div
+        className="row align-items-center justify-content-center m-2"
+        style={{ width: "70vw", height: "70vh" }}
+      >
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // 初期設定
+  const initialNodes: Node[] = [
+    {
+      id: "1",
+      type: "inputTitle",
+      data: {
+        label: "タイトル",
+        edit: true,
+        resizer: true,
+        name: session?.user?.name,
+        icon: session?.user?.image,
+      },
+      position: { x: 290, y: -250 },
+      deletable: false,
+    },
+    {
+      id: "2",
+      type: "text",
+      data: {
+        label: "# 説明",
+        edit: true,
+        resizer: true,
+        name: session?.user?.name,
+        icon: session?.user?.image,
+      },
+      position: { x: 250, y: 5 },
+      deletable: false,
+    },
+  ];
+  // エッジ
+  const initialEdges = [
+    { id: "e1-2", source: "1", target: "2", deletable: false },
+  ];
 
   // 入力内容取得用
   const getValue = (n: Node[], e: Edge[]) => {
