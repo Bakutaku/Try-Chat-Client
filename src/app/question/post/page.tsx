@@ -28,6 +28,8 @@ export default function Post() {
     );
   }
 
+  // TODO 未ログインの場合は表記を変える
+
   // 初期設定
   const initialNodes: Node[] = [
     {

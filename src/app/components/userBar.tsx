@@ -12,6 +12,7 @@ interface Props {
 export default function UserBar({ name, icon }: Props) {
   return (
     <div className="h-100 w-100 d-flex align-items-center">
+      {/* TODO 画像をiconの物にする(取得できたら) */}
       <Image
         width={50}
         height={50}
