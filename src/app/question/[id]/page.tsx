@@ -79,7 +79,6 @@ export default function QuestionItemPage({ params }: Params) {
     <div className="box rounded-4 bg-white p-3 mt-3">
       <div>
         <div className="h1">質問</div>
-        <div>Username</div>
       </div>
       <div
         className="border border-3 rounded-5 shadow border-edit-item bg-flow mx-5"
@@ -91,7 +90,12 @@ export default function QuestionItemPage({ params }: Params) {
           controls
         />
       </div>
-      <div className="mt-5 h1">コメント</div>
+      <div className="mt-5 h1 row">
+        <div className="col">コメント</div>
+        <div className="col d-flex justify-content-end align-items-center me-5">
+          <button className="btn btn-post text-white">投稿</button>
+        </div>
+      </div>
       <div
         className="border border-3 rounded-5 shadow border-edit bg-flow mx-5"
         style={{ height: "80vh" }}
