@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Logo from "./Logo";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import SignIn from "./signIn";
 
 /**
  * ヘッダー
@@ -46,8 +46,7 @@ export default function Header() {
             width={50}
             height={50}
           />
-          <button onClick={() => signIn()}>ログイン</button>
-          <button onClick={() => signOut()}>ログアウト</button>
+          <SignIn />
         </div>
       </div>
     </header>
