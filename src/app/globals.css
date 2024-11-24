@@ -84,6 +84,9 @@ a {
 .border-edit {
   border-color: #00aaff !important;
 }
+.border-edit-item {
+  border-color: #60dfb4 !important;
+}
 
 /* 影 */
 .svg-shadow {

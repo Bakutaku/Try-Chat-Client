@@ -25,6 +25,7 @@ import MarkdownNode from "./node/markdownNode";
 import { v4 as uuidv4 } from "uuid";
 import CommentNode from "./node/commentNode";
 import InputNode from "./node/inputNode";
+import { useSession } from "next-auth/react";
 
 // 引数
 interface Props {
@@ -74,6 +75,9 @@ const DnDFlow: React.FC<Props> = ({
     []
   );
 
+  // セッション取得
+  const { data: session } = useSession();
+
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -99,7 +103,12 @@ const DnDFlow: React.FC<Props> = ({
         id: getID(), // 新しいIDを生成
         type: type, // ドラッグされたタイプを使用
         position, // 新しい位置
-        data: { edit: true }, // ラベルとしてタイプを設定
+        data: {
+          edit: true,
+          resizer: true,
+          name: session?.user?.name,
+          icon: session?.user?.image,
+        }, // ラベルとしてタイプを設定
         deletable: true, // 削除できるか
       };
 

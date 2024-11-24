@@ -1,5 +1,6 @@
 import { NodeProps, NodeResizer } from "@xyflow/react";
 import { ChangeEvent, useState } from "react";
+import UserBar from "../../userBar";
 
 /**
  * コメント用のノード
@@ -16,9 +17,13 @@ export default function CommentNode({ data, selected }: NodeProps) {
     setText(e.target.value);
   };
 
+  // リサイズの設定
+  const isVisible = !!(selected && data.resizer);
+
   return (
     <div style={{ zIndex: 9999 }}>
-      {data.edit ? (
+      <UserBar name={data.name as string} icon={data.icon as string} />
+      {data.edit && data.resizer ? (
         <div className="card p-2 h-100 w-100">
           <div className="fs-1">#</div>
           <input
@@ -33,7 +38,7 @@ export default function CommentNode({ data, selected }: NodeProps) {
       <NodeResizer
         minWidth={100}
         minHeight={30}
-        isVisible={selected}
+        isVisible={isVisible}
         lineStyle={{ borderRadius: "8px", border: "5px solid #00aaff" }}
       />
     </div>
