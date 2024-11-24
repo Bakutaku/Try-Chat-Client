@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Logo from "./Logo";
 import Link from "next/link";
+import SignIn from "./signIn";
 
 /**
  * ヘッダー
@@ -41,6 +42,7 @@ export default function Header() {
             width={50}
             height={50}
           />
+          <SignIn />
         </div>
       </div>
     </header>
