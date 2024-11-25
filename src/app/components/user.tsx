@@ -1,11 +1,11 @@
-import { signIn } from "@/auth";
+"use client";
+import { SignIn } from "@/util/signIn";
 
-export default function SignIn() {
+export default function User() {
   return (
     <form
       action={async () => {
-        "use server";
-        await signIn("keycloak");
+        await SignIn();
       }}
     >
       <button className="btn btn-change text-white" type="submit">

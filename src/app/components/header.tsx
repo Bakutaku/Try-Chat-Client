@@ -1,8 +1,7 @@
-"use client";
 import Image from "next/image";
 import Logo from "./Logo";
 import Link from "next/link";
-import SignIn from "./signIn";
+import User from "./user";
 
 /**
  * ヘッダー
@@ -46,7 +45,7 @@ export default function Header() {
             width={50}
             height={50}
           />
-          <SignIn />
+          <User />
         </div>
       </div>
     </header>
