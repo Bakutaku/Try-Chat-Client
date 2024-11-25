@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Logo from "./Logo";
 import Link from "next/link";
 import User from "./user";
@@ -38,13 +37,6 @@ export default function Header() {
           >
             <i className="bi bi-pencil-square"></i>投稿
           </Link>
-          <Image
-            src={"https://placehold.jp/150x150.png"}
-            alt={"User Icon"}
-            className="rounded-circle bg-base-4 ms-3 shadow"
-            width={50}
-            height={50}
-          />
           <User />
         </div>
       </div>
