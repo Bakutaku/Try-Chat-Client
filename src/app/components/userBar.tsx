@@ -16,7 +16,7 @@ export default function UserBar({ name, icon }: Props) {
       <Image
         width={50}
         height={50}
-        src={"https://placehold.jp/150x150.png"}
+        src={icon}
         alt={"User Icon"}
         className="rounded-circle bg-base-4 shadow"
       />

@@ -1,5 +1,6 @@
 "use server";
 import { auth } from "@/auth";
+import { env } from "process";
 
 // 引数
 interface RequestProps {
@@ -68,4 +69,98 @@ export async function questionListRequest({
       method: "GET",
     },
   });
+}
+
+/**
+ * KeyCloakの管理者アクセストークン取得
+ */
+async function getKeyCloakAdminToken() {
+  // 必要な情報取得
+  const user = env.AUTH_KEYCLOAK_ADMIN_USER_NAME;
+  const password = env.AUTH_KEYCLOAK_ADMIN_PASSWORD;
+  const base_url = env.AUTH_KEYCLOAK_ADMIN_URL_BASE;
+
+  // ボディ作成
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("grant_type", "password");
+  urlencoded.append("username", user as string);
+  urlencoded.append("password", password as string);
+  urlencoded.append("client_id", "admin-cli");
+
+  return await request({
+    url: `${base_url}/realms/master/protocol/openid-connect/token`,
+    option: {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+      body: urlencoded,
+    },
+  });
+}
+
+interface KeyCloakToken {
+  token: string;
+}
+
+/**
+ * トークンの無効化
+ */
+async function logoutKeycloakToken({ token }: KeyCloakToken) {
+  // 情報取得
+  const base_url = env.AUTH_KEYCLOAK_ADMIN_URL_BASE;
+
+  // ボディ作成
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("token", token);
+  urlencoded.append("client_id", "admin-cli");
+
+  await request({
+    url: `${base_url}/realms/master/protocol/openid-connect/revoke`,
+    option: {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: urlencoded,
+    },
+  });
+}
+
+interface GetUserProfileProps {
+  userId: string;
+}
+
+/**
+ * ユーザのプロフィールの内容を取得
+ */
+export async function getUserProfile({ userId }: GetUserProfileProps) {
+  // 管理者トークン取得
+  const token = await getKeyCloakAdminToken();
+
+  // ベースURL取得
+  const base_url = env.AUTH_KEYCLOAK_ADMIN_URL_BASE;
+  const realms = env.AUTH_KEYCLOAK_REALMS;
+
+  // リクエスト
+  const res = await request({
+    url: `${base_url}/admin/realms/${realms}/users/${userId}`,
+    option: {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+      },
+    },
+  });
+
+  // トークン無効化
+  await logoutKeycloakToken(token);
+
+  return {
+    id: res.id,
+    username: res.username,
+    image: res?.attributes?.icon[0]
+      ? res?.attributes?.icon[0]
+      : "https://placehold.jp/150x150.png",
+  };
 }

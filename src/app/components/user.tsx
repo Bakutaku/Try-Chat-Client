@@ -13,16 +13,17 @@ export default function User() {
       <div>
         <Image
           src={
-            session?.user?.image
-              ? session?.user?.image
-              : "https://placehold.jp/150x150.png"
+            session?.image ? session?.image : "https://placehold.jp/150x150.png"
           }
           alt={"User Icon"}
           className="rounded-circle bg-base-4 ms-3 shadow"
           width={50}
           height={50}
         />
-        <button className="btn btn-change text-white" onClick={() => signOut()}>
+        <button
+          className="btn btn-change text-white ms-2"
+          onClick={() => signOut()}
+        >
           ログアウト
         </button>
       </div>
