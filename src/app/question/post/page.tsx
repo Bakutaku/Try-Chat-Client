@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Edge, Node } from "@xyflow/react";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import { useSession } from "next-auth/react";
+import { questionPostRequest } from "@/util/server";
 
 /**
  * 投稿ページ
@@ -82,12 +83,21 @@ export default function Post() {
   };
 
   // 投稿関数
-  const addPost = () => {
+  const addPost = async () => {
     // アップロード用に変換
     const node = nodeChange();
 
     // TODO ここで質問サーバにアップロードする
     console.log(node, edges);
+
+    await questionPostRequest({
+      baseURL: "http://127.0.0.1:8081",
+      explanation: "説明",
+      title: "投稿したぞ～",
+      edges: JSON.stringify(edges),
+      nodes: JSON.stringify(node),
+    });
+
     alert("送信しました");
   };
 

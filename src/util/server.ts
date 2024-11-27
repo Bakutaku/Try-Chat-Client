@@ -21,6 +21,7 @@ async function requestAuth({ url, option }: RequestProps) {
     option: {
       ...option,
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${session?.accessToken}`,
       },
     },
@@ -163,4 +164,36 @@ export async function getUserProfile({ userId }: GetUserProfileProps) {
       ? res?.attributes?.icon[0]
       : "https://placehold.jp/150x150.png",
   };
+}
+
+interface QuestionPostProps {
+  baseURL: string;
+  title: string;
+  explanation: string;
+  nodes: string;
+  edges: string;
+}
+/**
+ * 質問投稿
+ */
+export async function questionPostRequest({
+  baseURL,
+  title,
+  explanation,
+  nodes,
+  edges,
+}: QuestionPostProps) {
+  // リクエスト
+  return await requestAuth({
+    url: `${baseURL}/api/question`,
+    option: {
+      method: "POST",
+      body: JSON.stringify({
+        title: title,
+        explanation: explanation,
+        nodes: nodes,
+        edges: edges,
+      }),
+    },
+  });
 }
