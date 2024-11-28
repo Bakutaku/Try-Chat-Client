@@ -228,3 +228,21 @@ export async function questionPostRequest({
     },
   });
 }
+
+interface QuestionItemProps {
+  baseURL: string; // ベースURL
+  id: string; // 投稿ID
+}
+
+/**
+ * 投稿の詳細取得
+ */
+export async function questionItemRequest({ baseURL, id }: QuestionItemProps) {
+  // リクエストを送る
+  return await requestAuth({
+    url: `${baseURL}/api/question/${id}`,
+    option: {
+      method: "GET",
+    },
+  });
+}

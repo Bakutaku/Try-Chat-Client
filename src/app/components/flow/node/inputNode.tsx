@@ -10,7 +10,9 @@ export default function InputNode({
   isConnectable,
   selected,
 }: NodeProps) {
-  const [text, setText] = useState("タイトル"); // 入力値
+  const [text, setText] = useState(
+    data.text ? (data.text as string) : "タイトル"
+  ); // 入力値
 
   // 入力のイベント
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

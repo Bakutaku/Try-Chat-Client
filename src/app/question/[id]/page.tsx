@@ -1,8 +1,10 @@
 "use client";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import FlowView from "@/app/components/flow/flowView";
+import { questionItemRequest } from "@/util/server";
 import { Edge, Node } from "@xyflow/react";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 // ページの引数
 interface Params {
@@ -39,8 +41,48 @@ const initialEdges = [
  * 質問閲覧ページ
  */
 export default function QuestionItemPage({ params }: Params) {
-  const [nodes, setNodes] = useState<Node[]>([]); // ノード用
-  const [edges, setEdges] = useState<Edge[]>([]); // エッジ用
+  const [nodes, setNodes] = useState<Node[]>(initialNodes); // ノード用
+  const [edges, setEdges] = useState<Edge[]>(initialEdges); // エッジ用
+  const [load, setLoad] = useState(true); // 読み込み管理
+
+  const { data: session, status } = useSession(); // セッション取得
+
+  // サーバからデータを取得
+  const fetchData = async () => {
+    // リクエスト
+    const res = await questionItemRequest({
+      baseURL: "http://127.0.0.1:8081",
+      id: params.id,
+    });
+
+    // データ設定
+    setNodes(JSON.parse(res.data.nodes));
+    setEdges(JSON.parse(res.data.edges));
+
+    // 読み込み完了にする
+    setLoad(false);
+    console.log("読み込み完了!!");
+  };
+
+  // 初回ロード
+  useEffect(() => {
+    return () => {
+      // サーバにリクエスト
+      fetchData();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 読み込み中の場合
+  if (status === "loading" || load) {
+    return (
+      <div className="row align-items-center justify-content-center m-2">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   // 内容取得用
   const getValue = (n: Node[], e: Edge[]) => {
@@ -72,8 +114,8 @@ export default function QuestionItemPage({ params }: Params) {
   };
 
   // 無効化
-  const defaultNode = nodeDeletable(initialNodes);
-  const defaultEdge = edgeDeletable(initialEdges);
+  const defaultNode = nodeDeletable(nodes);
+  const defaultEdge = edgeDeletable(edges);
 
   return (
     <div className="box rounded-4 bg-white p-3 mt-3">
