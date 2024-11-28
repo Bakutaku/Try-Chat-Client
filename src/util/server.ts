@@ -166,6 +166,37 @@ export async function getUserProfile({ userId }: GetUserProfileProps) {
   };
 }
 
+interface RefreshTokenProps {
+  refreshToken: string;
+}
+
+/**
+ * トークン再発行
+ */
+export async function refreshToken({ refreshToken }: RefreshTokenProps) {
+  // 情報取得
+  const base_url = env.AUTH_KEYCLOAK_ISSUER;
+  const client = env.AUTH_KEYCLOAK_ID;
+  const secret = env.AUTH_KEYCLOAK_SECRET;
+
+  // 値設定
+  const urlencoded = new URLSearchParams();
+  urlencoded.append("client_id", client as string);
+  urlencoded.append("client_secret", secret as string);
+  urlencoded.append("grant_type", "refresh_token");
+  urlencoded.append("refresh_token", refreshToken);
+
+  // リクエスト
+  return await request({
+    url: `${base_url}/protocol/openid-connect/token`,
+    option: {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: urlencoded,
+    },
+  });
+}
+
 interface QuestionPostProps {
   baseURL: string;
   title: string;
