@@ -87,13 +87,17 @@ export default function Post() {
     // アップロード用に変換
     const node = nodeChange();
 
-    // TODO ここで質問サーバにアップロードする
-    console.log(node, edges);
+    // タイトルのノード取得
+    const titleNode: Node | undefined = node.find((_node) => _node.id === "1");
 
+    // 説明のノード取得
+    const exp: Node | undefined = node.find((_node) => _node.id === "2");
+
+    // アップロード
     await questionPostRequest({
       baseURL: "http://127.0.0.1:8081",
-      explanation: "説明",
-      title: "投稿したぞ～",
+      title: titleNode?.data?.text as string,
+      explanation: exp?.data?.text as string,
       edges: JSON.stringify(edges),
       nodes: JSON.stringify(node),
     });
