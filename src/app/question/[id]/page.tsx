@@ -183,7 +183,9 @@ export default function QuestionItemPage({ params }: Params) {
     const res = await answerPostRequest({
       baseURL: "http://127.0.0.1:8081",
       id: params.id,
-      edges: JSON.stringify(ansEdges),
+      edges: JSON.stringify(
+        ansEdges.filter((e) => e.data?.userID != session?.userId)
+      ),
       nodes: JSON.stringify(
         ansNodes.filter((n) => n.data.userID == session?.userId)
       ),
