@@ -215,7 +215,7 @@ export async function questionPostRequest({
   edges,
 }: QuestionPostProps) {
   // リクエスト
-  return await requestAuth({
+  const res = await requestAuth({
     url: `${baseURL}/api/question`,
     option: {
       method: "POST",
@@ -227,6 +227,8 @@ export async function questionPostRequest({
       }),
     },
   });
+  console.log(res);
+  return res;
 }
 
 interface QuestionItemProps {

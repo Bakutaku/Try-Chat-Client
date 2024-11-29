@@ -52,27 +52,39 @@ export default function Home() {
     <div className="">
       <div className="fs-1 text-shadow">Try{"{"}</div>
       <div className="mx-5">
-        {/* TODO テスト用 */}
-        <PostItem
-          userName="UserName"
-          title="タイトル"
-          message="質問内容"
-          userIcon="Try-Chat_icon.svg"
-        />
         <InfiniteScroll
+          className="h-100 w-100 overflow-visible"
           dataLength={posts.length} // 現在のアイテム数
           next={fetchData} // 次のデータ読み込み用の関数
           hasMore={hasMore} // 無限スクロール可能か
-          loader={<h1>ロード中</h1>} // ロード中の表記
-          endMessage={<h1>最後</h1>} // 最後の表記
-        >
-          <>
-            {posts.map((post) => (
-              <div key={post.id} style={{}}>
-                {post.title}
+          loader={
+            <div className="row align-items-center justify-content-center m-2 mt-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
+            </div>
+          } // ロード中の表記
+          endMessage={
+            <div className="fs-1 text-shadow">
+              <div>{"} chat{"}</div>
+              <div className="ms-5">Console.log({'"No Data"'})</div>
+              <div>{"}"}</div>
+            </div>
+          } // 最後の表記
+        >
+          <div>
+            {posts.map((post) => (
+              // <div key={post.id} style={{}}>
+              //   {post.title}
+              // </div>
+              <PostItem
+                key={post.id}
+                userId={post.userID}
+                title={post.title}
+                message={post.explanation}
+              />
             ))}
-          </>
+          </div>
         </InfiniteScroll>
       </div>
     </div>

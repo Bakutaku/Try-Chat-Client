@@ -94,15 +94,21 @@ export default function Post() {
     const exp: Node | undefined = node.find((_node) => _node.id === "2");
 
     // アップロード
-    await questionPostRequest({
+    const res = await questionPostRequest({
       baseURL: "http://127.0.0.1:8081",
-      title: titleNode?.data?.text as string,
-      explanation: exp?.data?.text as string,
+      title: titleNode?.data?.text as string | "No Data",
+      explanation: exp?.data?.text as string | "No Data",
       edges: JSON.stringify(edges),
       nodes: JSON.stringify(node),
     });
 
-    alert("送信しました");
+    if (res.status == "success") {
+      alert("投稿できました");
+    } else {
+      alert(
+        `投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`
+      );
+    }
   };
 
   return (

@@ -176,3 +176,12 @@ pre {
 .bg-flow {
   background-color: #f7f7f7;
 }
+
+.scroll_item {
+  -ms-overflow-style: none;
+}
+
+.scroll_item::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
+}
