@@ -8,6 +8,7 @@ declare module "next-auth" {
     accessToken?: string;
     refreshToken?: string;
     image?: string;
+    userId?: string;
   }
 }
 declare module "@auth/core/jwt" {

@@ -108,6 +108,7 @@ const DnDFlow: React.FC<Props> = ({
           resizer: true,
           name: session?.user?.name,
           icon: session?.image,
+          userID: session?.userId,
         }, // ラベルとしてタイプを設定
         deletable: true, // 削除できるか
       };

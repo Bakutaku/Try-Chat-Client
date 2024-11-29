@@ -1,7 +1,7 @@
 "use client";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import FlowView from "@/app/components/flow/flowView";
-import { questionItemRequest } from "@/util/server";
+import { answerListRequest, questionItemRequest } from "@/util/server";
 import { Edge, Node } from "@xyflow/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -43,6 +43,8 @@ const initialEdges = [
 export default function QuestionItemPage({ params }: Params) {
   const [nodes, setNodes] = useState<Node[]>(initialNodes); // ノード用
   const [edges, setEdges] = useState<Edge[]>(initialEdges); // エッジ用
+  const [ansNodes, setAnsNodes] = useState<Node[]>(initialNodes); // ノード用
+  const [ansEdges, setAnsEdges] = useState<Edge[]>(initialEdges); // エッジ用
   const [load, setLoad] = useState(true); // 読み込み管理
 
   const { data: session, status } = useSession(); // セッション取得
@@ -50,14 +52,29 @@ export default function QuestionItemPage({ params }: Params) {
   // サーバからデータを取得
   const fetchData = async () => {
     // リクエスト
-    const res = await questionItemRequest({
+    // 質問
+    const resQuestion = await questionItemRequest({
       baseURL: "http://127.0.0.1:8081",
       id: params.id,
     });
+    // 回答一覧
+    const resAnswer = await answerListRequest({
+      baseURL: "http://127.0.0.1:8081",
+      id: params.id,
+    });
+    console.log(resAnswer);
 
     // データ設定
-    setNodes(JSON.parse(res.data.nodes));
-    setEdges(JSON.parse(res.data.edges));
+    setNodes(JSON.parse(resQuestion.data.nodes));
+    setEdges(JSON.parse(resQuestion.data.edges));
+
+    const nodeData = resAnswer.data.map((_data: { nodes: string }) =>
+      JSON.parse(_data.nodes)
+    );
+
+    console.log(JSON.parse(resQuestion.data.nodes), nodeData);
+
+    setAnsNodes(nodeData.flat(1));
 
     // 読み込み完了にする
     setLoad(false);
@@ -86,11 +103,9 @@ export default function QuestionItemPage({ params }: Params) {
 
   // 内容取得用
   const getValue = (n: Node[], e: Edge[]) => {
-    setNodes(n);
-    setEdges(e);
+    setAnsNodes(n);
+    setAnsEdges(e);
   };
-
-  // TODO 既存の質問の操作をすべて無効にするdraggable: false,などを追加する
 
   // ノードの操作を無効にする処理
   const nodeDeletable = (nodes_p: Node[]) => {
@@ -113,9 +128,32 @@ export default function QuestionItemPage({ params }: Params) {
     }));
   };
 
+  // ユーザIDが同じものは有効にする
+  const nodeUnDeletable = (_nodes: Node[]) => {
+    return [
+      ..._nodes
+        .filter((_n) => _n.data.userID == session?.userId)
+        .map((n) => ({
+          ...n,
+          data: {
+            ...n.data,
+            edit: true,
+            resizer: true,
+          },
+          deletable: true,
+          draggable: true,
+        })),
+      ..._nodes.filter((_n) => _n.data.userID != session?.userId),
+    ];
+  };
+
   // 無効化
   const defaultNode = nodeDeletable(nodes);
   const defaultEdge = edgeDeletable(edges);
+
+  // 回答で本人の物は有効にする
+  const ansDefaultNode = nodeUnDeletable(nodeDeletable(ansNodes));
+  const ansDefaultEdge = ansEdges; // Edgesにデータを持たせる方法が分からなかったため保留
 
   return (
     <div className="box rounded-4 bg-white p-3 mt-3">
@@ -146,8 +184,8 @@ export default function QuestionItemPage({ params }: Params) {
           getValue={getValue}
           miniMap
           controls
-          initialNodes={defaultNode}
-          initialEdges={defaultEdge}
+          initialNodes={ansDefaultNode}
+          initialEdges={ansDefaultEdge}
         />
       </div>
     </div>

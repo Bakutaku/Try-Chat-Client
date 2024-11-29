@@ -248,3 +248,21 @@ export async function questionItemRequest({ baseURL, id }: QuestionItemProps) {
     },
   });
 }
+
+interface AnswerListProps {
+  baseURL: string; // ベースURL
+  id: string; // 投稿ID
+}
+
+/**
+ * 回答一覧取得
+ */
+export async function answerListRequest({ baseURL, id }: AnswerListProps) {
+  // リクエストを送る
+  return await requestAuth({
+    url: `${baseURL}/api/answer/${id}`,
+    option: {
+      method: "GET",
+    },
+  });
+}
