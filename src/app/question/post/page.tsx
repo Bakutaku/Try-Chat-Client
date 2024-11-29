@@ -38,6 +38,7 @@ export default function Post() {
       type: "inputTitle",
       data: {
         label: "タイトル",
+        text: "タイトル",
         edit: true,
         resizer: true,
         name: session?.user?.name,
@@ -52,6 +53,7 @@ export default function Post() {
       type: "text",
       data: {
         label: "# 説明",
+        text: "# 説明",
         edit: true,
         resizer: true,
         name: session?.user?.name,
@@ -64,7 +66,13 @@ export default function Post() {
   ];
   // エッジ
   const initialEdges = [
-    { id: "e1-2", source: "1", target: "2", deletable: false },
+    {
+      id: "e1-2",
+      source: "1",
+      target: "2",
+      deletable: false,
+      data: { userID: session?.userId },
+    },
   ];
 
   // 入力内容取得用

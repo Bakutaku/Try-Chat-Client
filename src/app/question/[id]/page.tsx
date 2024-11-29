@@ -151,6 +151,23 @@ export default function QuestionItemPage({ params }: Params) {
       ..._nodes.filter((_n) => _n.data.userID != session?.userId),
     ];
   };
+  const edgeUnDeletable = (_edges: Edge[]) => {
+    return [
+      ..._edges
+        .filter((_e) => _e.data?.userID == session?.userId)
+        .map((e) => ({
+          ...e,
+          data: {
+            ...e.data,
+            edit: false,
+            resizer: true,
+          },
+          deletable: true,
+          draggable: true,
+        })),
+      ..._edges.filter((_e) => _e.data?.userID != session?.userId),
+    ];
+  };
 
   // 無効化
   const defaultNode = nodeDeletable(nodes);
@@ -158,7 +175,7 @@ export default function QuestionItemPage({ params }: Params) {
 
   // 回答で本人の物は有効にする
   const ansDefaultNode = nodeUnDeletable(nodeDeletable(ansNodes));
-  const ansDefaultEdge = ansEdges; // Edgesにデータを持たせる方法が分からなかったため保留
+  const ansDefaultEdge = edgeUnDeletable(edgeDeletable(ansEdges));
 
   // 投稿処理
   const addPost = async () => {

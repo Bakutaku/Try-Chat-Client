@@ -70,7 +70,10 @@ const DnDFlow: React.FC<Props> = ({
 
   // ノードが接続された際に呼ばれるコールバック
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)), // 新しいエッジを追加する
+    (params: Connection) =>
+      setEdges(
+        (eds) => addEdge({ ...params, data: { userID: session?.userId } }, eds) // 新しいエッジを追加する
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );

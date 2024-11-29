@@ -14,7 +14,9 @@ export default function MarkdownNode({
   isConnectable,
   selected,
 }: NodeProps) {
-  const [text, setText] = useState(data.text ? (data.text as string) : "#説明"); // 入力値
+  const [text, setText] = useState(
+    data.text ? (data.text as string) : "# 説明"
+  ); // 入力値
   const [isMark, setIsMark] = useState(data.edit); // 表示切替
 
   // 入力のイベント
