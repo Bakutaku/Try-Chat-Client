@@ -227,7 +227,7 @@ export async function questionPostRequest({
       }),
     },
   });
-  console.log(res);
+
   return res;
 }
 
@@ -265,4 +265,35 @@ export async function answerListRequest({ baseURL, id }: AnswerListProps) {
       method: "GET",
     },
   });
+}
+
+interface AnswerPostProps {
+  baseURL: string; // ベースURL
+  id: string; // 投稿ID
+  nodes: string;
+  edges: string;
+}
+
+/**
+ * 回答投稿
+ */
+export async function answerPostRequest({
+  baseURL,
+  id,
+  nodes,
+  edges,
+}: AnswerPostProps) {
+  // リクエスト
+  const res = await requestAuth({
+    url: `${baseURL}/api/answer/${id}`,
+    option: {
+      method: "POST",
+      body: JSON.stringify({
+        nodes: nodes,
+        edges: edges,
+      }),
+    },
+  });
+  console.log(res);
+  return res;
 }

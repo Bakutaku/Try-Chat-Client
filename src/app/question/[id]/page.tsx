@@ -1,7 +1,11 @@
 "use client";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import FlowView from "@/app/components/flow/flowView";
-import { answerListRequest, questionItemRequest } from "@/util/server";
+import {
+  answerListRequest,
+  answerPostRequest,
+  questionItemRequest,
+} from "@/util/server";
 import { Edge, Node } from "@xyflow/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -62,7 +66,6 @@ export default function QuestionItemPage({ params }: Params) {
       baseURL: "http://127.0.0.1:8081",
       id: params.id,
     });
-    console.log(resAnswer);
 
     // データ設定
     setNodes(JSON.parse(resQuestion.data.nodes));
@@ -71,10 +74,12 @@ export default function QuestionItemPage({ params }: Params) {
     const nodeData = resAnswer.data.map((_data: { nodes: string }) =>
       JSON.parse(_data.nodes)
     );
-
-    console.log(JSON.parse(resQuestion.data.nodes), nodeData);
+    const edgesData = resAnswer.data.map((_data: { edges: string }) =>
+      JSON.parse(_data.edges)
+    );
 
     setAnsNodes(nodeData.flat(1));
+    setAnsEdges(edgesData.flat(1));
 
     // 読み込み完了にする
     setLoad(false);
@@ -137,7 +142,7 @@ export default function QuestionItemPage({ params }: Params) {
           ...n,
           data: {
             ...n.data,
-            edit: true,
+            edit: false,
             resizer: true,
           },
           deletable: true,
@@ -154,6 +159,30 @@ export default function QuestionItemPage({ params }: Params) {
   // 回答で本人の物は有効にする
   const ansDefaultNode = nodeUnDeletable(nodeDeletable(ansNodes));
   const ansDefaultEdge = ansEdges; // Edgesにデータを持たせる方法が分からなかったため保留
+
+  // 投稿処理
+  const addPost = async () => {
+    // アップロード
+    const res = await answerPostRequest({
+      baseURL: "http://127.0.0.1:8081",
+      id: params.id,
+      edges: JSON.stringify(ansEdges),
+      nodes: JSON.stringify(
+        ansNodes.filter((n) => n.data.userID == session?.userId)
+      ),
+    });
+
+    console.log(res);
+
+    // 結果
+    if (res.status == "success") {
+      alert("投稿できました");
+    } else {
+      alert(
+        `投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`
+      );
+    }
+  };
 
   return (
     <div className="box rounded-4 bg-white p-3 mt-3">
@@ -173,7 +202,9 @@ export default function QuestionItemPage({ params }: Params) {
       <div className="mt-5 h1 row">
         <div className="col">コメント</div>
         <div className="col d-flex justify-content-end align-items-center me-5">
-          <button className="btn btn-post text-white">投稿</button>
+          <button className="btn btn-post text-white" onClick={() => addPost()}>
+            投稿
+          </button>
         </div>
       </div>
       <div
