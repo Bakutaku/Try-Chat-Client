@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PostItem from "./components/postItem";
 import { questionListRequest } from "@/util/server";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Link from "next/link";
 
 interface PostItemProp {
   id: string;
@@ -74,15 +75,14 @@ export default function Home() {
         >
           <div>
             {posts.map((post) => (
-              // <div key={post.id} style={{}}>
-              //   {post.title}
-              // </div>
-              <PostItem
-                key={post.id}
-                userId={post.userID}
-                title={post.title}
-                message={post.explanation}
-              />
+              <Link key={post.id} href={`/question/${post.id}`}>
+                <PostItem
+                  key={post.id}
+                  userId={post.userID}
+                  title={post.title}
+                  message={post.explanation}
+                />
+              </Link>
             ))}
           </div>
         </InfiniteScroll>
