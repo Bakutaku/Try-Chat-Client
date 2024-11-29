@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Edge, Node } from "@xyflow/react";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import { useSession } from "next-auth/react";
+import { questionPostRequest } from "@/util/server";
 
 /**
  * 投稿ページ
@@ -37,10 +38,12 @@ export default function Post() {
       type: "inputTitle",
       data: {
         label: "タイトル",
+        text: "タイトル",
         edit: true,
         resizer: true,
         name: session?.user?.name,
-        icon: session?.user?.image,
+        icon: session?.image,
+        userID: session?.userId,
       },
       position: { x: 290, y: -250 },
       deletable: false,
@@ -50,10 +53,12 @@ export default function Post() {
       type: "text",
       data: {
         label: "# 説明",
+        text: "# 説明",
         edit: true,
         resizer: true,
         name: session?.user?.name,
-        icon: session?.user?.image,
+        icon: session?.image,
+        userID: session?.userId,
       },
       position: { x: 250, y: 5 },
       deletable: false,
@@ -61,7 +66,13 @@ export default function Post() {
   ];
   // エッジ
   const initialEdges = [
-    { id: "e1-2", source: "1", target: "2", deletable: false },
+    {
+      id: "e1-2",
+      source: "1",
+      target: "2",
+      deletable: false,
+      data: { userID: session?.userId },
+    },
   ];
 
   // 入力内容取得用
@@ -82,13 +93,32 @@ export default function Post() {
   };
 
   // 投稿関数
-  const addPost = () => {
+  const addPost = async () => {
     // アップロード用に変換
     const node = nodeChange();
 
-    // TODO ここで質問サーバにアップロードする
-    console.log(node, edges);
-    alert("送信しました");
+    // タイトルのノード取得
+    const titleNode: Node | undefined = node.find((_node) => _node.id === "1");
+
+    // 説明のノード取得
+    const exp: Node | undefined = node.find((_node) => _node.id === "2");
+
+    // アップロード
+    const res = await questionPostRequest({
+      baseURL: "http://127.0.0.1:8081",
+      title: titleNode?.data?.text as string | "No Data",
+      explanation: exp?.data?.text as string | "No Data",
+      edges: JSON.stringify(edges),
+      nodes: JSON.stringify(node),
+    });
+
+    if (res.status == "success") {
+      alert("投稿できました");
+    } else {
+      alert(
+        `投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`
+      );
+    }
   };
 
   return (

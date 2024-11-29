@@ -10,7 +10,9 @@ export default function InputNode({
   isConnectable,
   selected,
 }: NodeProps) {
-  const [text, setText] = useState("タイトル"); // 入力値
+  const [text, setText] = useState(
+    data.text ? (data.text as string) : "タイトル"
+  ); // 入力値
 
   // 入力のイベント
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +29,7 @@ export default function InputNode({
   return (
     <>
       <UserBar name={data.name as string} icon={data.icon as string} />
-      <div className="card fs-2 p-3 fw-bold w-100">
+      <div className="card fs-2 p-3 fw-bold w-100 h-100">
         {data.label ? (
           <div className="w-100">{data.label as string}</div>
         ) : (

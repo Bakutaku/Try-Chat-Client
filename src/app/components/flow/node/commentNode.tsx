@@ -6,7 +6,9 @@ import UserBar from "../../userBar";
  * コメント用のノード
  */
 export default function CommentNode({ data, selected }: NodeProps) {
-  const [text, setText] = useState("コメント"); // 入力値
+  const [text, setText] = useState(
+    data.text ? (data.text as string) : "コメント"
+  ); // 入力値
 
   // 入力のイベント
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

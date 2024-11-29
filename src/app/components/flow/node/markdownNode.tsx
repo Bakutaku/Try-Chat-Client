@@ -14,7 +14,9 @@ export default function MarkdownNode({
   isConnectable,
   selected,
 }: NodeProps) {
-  const [text, setText] = useState(data.label as string); // 入力値
+  const [text, setText] = useState(
+    data.text ? (data.text as string) : "# 説明"
+  ); // 入力値
   const [isMark, setIsMark] = useState(data.edit); // 表示切替
 
   // 入力のイベント
@@ -31,7 +33,7 @@ export default function MarkdownNode({
   return (
     <>
       <UserBar name={data.name as string} icon={data.icon as string} />
-      <div className="card p-3 h-100" style={{ minWidth: "500px" }}>
+      <div className="card p-3 h-100 mt-0" style={{ minWidth: "500px" }}>
         {data.edit && data.resizer ? (
           <button
             className="btn btn-change text-white"

@@ -11,12 +11,11 @@ interface Props {
  */
 export default function UserBar({ name, icon }: Props) {
   return (
-    <div className="h-100 w-100 d-flex align-items-center">
-      {/* TODO 画像をiconの物にする(取得できたら) */}
+    <div className="w-100 d-flex align-items-center">
       <Image
         width={50}
         height={50}
-        src={"https://placehold.jp/150x150.png"}
+        src={icon}
         alt={"User Icon"}
         className="rounded-circle bg-base-4 shadow"
       />
