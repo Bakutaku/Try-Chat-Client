@@ -5,13 +5,8 @@ import Image from "next/image";
  */
 export default function ServerBarItem() {
   return (
-    <li className="bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center">
-      <Image
-        src={"/Try-Chat_icon.svg"}
-        alt={"Server Icon"}
-        width={50}
-        height={50}
-      />
+    <li className="btn m-0 p-0 bg-text text-white rounded-circle m-2 d-flex justify-content-center align-items-center">
+      <Image src={"/Try-Chat_icon.svg"} alt={"Server Icon"} width={50} height={50} />
     </li>
   );
 }

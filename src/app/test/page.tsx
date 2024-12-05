@@ -12,6 +12,7 @@ export default function Test() {
 
   return (
     <div className="text-black">
+      <button onClick={() => alert(window?.localStorage.getItem("select"))}>テストボタン</button>
       <Tooltip text={"Server"}>ここをクリック</Tooltip>
 
       <MarkdownEditor text={text} setText={setText} />

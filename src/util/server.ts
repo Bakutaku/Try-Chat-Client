@@ -36,6 +36,8 @@ async function request({ url, option }: RequestProps) {
   const res = await fetch(`${url}`, {
     ...option,
   }).catch((e) => {
+    console.log("url", url);
+    console.log("option", option);
     console.error(e);
     throw new Error(`リクエストが失敗しました`);
   });
@@ -53,11 +55,7 @@ interface QuestionListRequest {
 /**
  * 質問一覧取得
  */
-export async function questionListRequest({
-  baseURL,
-  page,
-  size,
-}: QuestionListRequest) {
+export async function questionListRequest({ baseURL, page, size }: QuestionListRequest) {
   // URL作成
   const param = new URLSearchParams();
   param.set("page", String(page));
@@ -160,9 +158,7 @@ export async function getUserProfile({ userId }: GetUserProfileProps) {
   return {
     id: res.id,
     username: res.username,
-    image: res?.attributes?.icon[0]
-      ? res?.attributes?.icon[0]
-      : "https://placehold.jp/150x150.png",
+    image: res?.attributes?.icon[0] ? res?.attributes?.icon[0] : "https://placehold.jp/150x150.png",
   };
 }
 
@@ -207,13 +203,7 @@ interface QuestionPostProps {
 /**
  * 質問投稿
  */
-export async function questionPostRequest({
-  baseURL,
-  title,
-  explanation,
-  nodes,
-  edges,
-}: QuestionPostProps) {
+export async function questionPostRequest({ baseURL, title, explanation, nodes, edges }: QuestionPostProps) {
   // リクエスト
   const res = await requestAuth({
     url: `${baseURL}/api/question`,
@@ -277,12 +267,7 @@ interface AnswerPostProps {
 /**
  * 回答投稿
  */
-export async function answerPostRequest({
-  baseURL,
-  id,
-  nodes,
-  edges,
-}: AnswerPostProps) {
+export async function answerPostRequest({ baseURL, id, nodes, edges }: AnswerPostProps) {
   // リクエスト
   const res = await requestAuth({
     url: `${baseURL}/api/answer/${id}`,

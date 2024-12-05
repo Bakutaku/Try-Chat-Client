@@ -18,10 +18,7 @@ export default function Post() {
   // session読み込み中の場合
   if (status === "loading") {
     return (
-      <div
-        className="row align-items-center justify-content-center m-2"
-        style={{ width: "70vw", height: "70vh" }}
-      >
+      <div className="row align-items-center justify-content-center m-2" style={{ width: "70vw", height: "70vh" }}>
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -105,7 +102,7 @@ export default function Post() {
 
     // アップロード
     const res = await questionPostRequest({
-      baseURL: "http://127.0.0.1:8081",
+      baseURL: window?.localStorage.getItem("select") as string,
       title: titleNode?.data?.text as string | "No Data",
       explanation: exp?.data?.text as string | "No Data",
       edges: JSON.stringify(edges),
@@ -115,9 +112,7 @@ export default function Post() {
     if (res.status == "success") {
       alert("投稿できました");
     } else {
-      alert(
-        `投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`
-      );
+      alert(`投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`);
     }
   };
 
@@ -126,25 +121,13 @@ export default function Post() {
       <div className="d-flex justify-content-center">
         <div className="h1 col">質問</div>
         <div className="float-right">
-          <button
-            className="btn btn-post text-white fs-4 p-1 px-3"
-            onClick={addPost}
-          >
+          <button className="btn btn-post text-white fs-4 p-1 px-3" onClick={addPost}>
             投稿
           </button>
         </div>
       </div>
-      <div
-        className="border border-3 rounded-5 shadow border-edit bg-flow"
-        style={{ width: "70vw", height: "70vh" }}
-      >
-        <DnDFlowEdit
-          miniMap
-          controls
-          getValue={getValue}
-          initialNodes={initialNodes}
-          initialEdges={initialEdges}
-        />
+      <div className="border border-3 rounded-5 shadow border-edit bg-flow" style={{ width: "70vw", height: "70vh" }}>
+        <DnDFlowEdit miniMap controls getValue={getValue} initialNodes={initialNodes} initialEdges={initialEdges} />
       </div>
     </div>
   );

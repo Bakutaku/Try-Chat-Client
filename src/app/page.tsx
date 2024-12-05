@@ -21,7 +21,7 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const rs = await questionListRequest({
-        baseURL: "http://127.0.0.1:8081",
+        baseURL: window?.localStorage.getItem("select") as string,
         page: page,
         size: 10,
       });
@@ -76,12 +76,7 @@ export default function Home() {
           <div>
             {posts.map((post) => (
               <Link key={post.id} href={`/question/${post.id}`}>
-                <PostItem
-                  key={post.id}
-                  userId={post.userID}
-                  title={post.title}
-                  message={post.explanation}
-                />
+                <PostItem key={post.id} userId={post.userID} title={post.title} message={post.explanation} />
               </Link>
             ))}
           </div>

@@ -33,7 +33,7 @@ export default function MarkdownNode({
   return (
     <>
       <UserBar name={data.name as string} icon={data.icon as string} />
-      <div className="card p-3 h-100 mt-0" style={{ minWidth: "500px" }}>
+      <div className={"card p-3"} style={{ minWidth: "500px" }}>
         {data.edit && data.resizer ? (
           <button
             className="btn btn-change text-white"
