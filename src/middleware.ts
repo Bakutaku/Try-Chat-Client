@@ -18,5 +18,5 @@ export default auth(async (req: NextRequest) => {
 
 // 適応するパス
 export const config = {
-  matcher: ["/((?!api/*|_next/static|_next/image|favicon.ico|Try-Chat_icon.svg).*)"],
+  matcher: ["/((?!api/*|_next/static|_next/image|favicon.png|Try-Chat_icon.svg).*)"],
 };

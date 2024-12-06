@@ -22,6 +22,8 @@ declare module "@auth/core/jwt" {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // 認証先設定
+  trustHost: true,
+  debug: true,
   providers: [Keycloak],
   session: {
     strategy: "jwt",
