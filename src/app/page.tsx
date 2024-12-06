@@ -18,6 +18,16 @@ export default function Home() {
   const [page, setPage] = useState(0); // ページ数
   const [hasMore, setHasMore] = useState(true); // 次があるか
 
+  // 利用規約の同意
+  const [showTerms, setShowTerms] = useState(true);
+
+  useEffect(() => {
+    // 選択しているサーバ
+    if (typeof window != "undefined") {
+      setShowTerms(window?.localStorage.getItem("Terms") == undefined);
+    }
+  }, []);
+
   const fetchData = async () => {
     try {
       const rs = await questionListRequest({
@@ -50,6 +60,27 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (showTerms) {
+    return (
+      <>
+        <p>サービス利用について</p>
+        <p>
+          当サービスは開発中となっており一時的に公開されています、利用者は自己責任において当サービスを利用するものとします。当サービスの利用により発生したいかなる損害や損失について、一切の責任を負いません。
+        </p>
+        <p>同意条件</p>
+        <p>当サービスのアカウント作成、または同意ボタンを押した場合、利用規約に同意したものとみなします。</p>
+        <button
+          onClick={() => {
+            window?.localStorage.setItem("Terms", "ok");
+            setShowTerms(false);
+          }}
+        >
+          同意
+        </button>
+      </>
+    );
+  }
+
   return (
     <div className="">
       <div className="fs-1 text-shadow">Try{"{"}</div>
@@ -77,12 +108,7 @@ export default function Home() {
           <div>
             {posts.map((post) => (
               <Link key={post.id} href={`/question/${post.id}`}>
-                <PostItem
-                  key={post.id}
-                  userId={post.userID}
-                  title={post.title}
-                  message={post.explanation}
-                />
+                <PostItem key={post.id} userId={post.userID} title={post.title} message={post.explanation} />
               </Link>
             ))}
           </div>

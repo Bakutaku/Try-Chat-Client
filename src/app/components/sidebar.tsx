@@ -10,7 +10,7 @@ import Link from "next/link";
  * サイドバー
  */
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true); // 開閉管理用
+  const [isOpen, setIsOpen] = useState(true); // 開閉管理用 //TODO
   const [server, setServer] = useState(["http://127.0.0.1:8081"]); // サーバ一覧
   const [select, setSelect] = useState("http://127.0.0.1:8081"); // 選択しているサーバ
 
