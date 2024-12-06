@@ -54,9 +54,7 @@ export default function Home() {
 
   // 初回ロード
   useEffect(() => {
-    return () => {
-      fetchData();
-    };
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,11 +1,7 @@
 "use client";
 import DnDFlowEdit from "@/app/components/flow/DnDFlow";
 import FlowView from "@/app/components/flow/flowView";
-import {
-  answerListRequest,
-  answerPostRequest,
-  questionItemRequest,
-} from "@/util/server";
+import { answerListRequest, answerPostRequest, questionItemRequest } from "@/util/server";
 import { Edge, Node } from "@xyflow/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -37,9 +33,7 @@ const initialNodes: Node[] = [
   },
 ];
 // エッジ
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2", deletable: false },
-];
+const initialEdges = [{ id: "e1-2", source: "1", target: "2", deletable: false }];
 
 /**
  * 質問閲覧ページ
@@ -71,12 +65,8 @@ export default function QuestionItemPage({ params }: Params) {
     setNodes(JSON.parse(resQuestion.data.nodes));
     setEdges(JSON.parse(resQuestion.data.edges));
 
-    const nodeData = resAnswer.data.map((_data: { nodes: string }) =>
-      JSON.parse(_data.nodes)
-    );
-    const edgesData = resAnswer.data.map((_data: { edges: string }) =>
-      JSON.parse(_data.edges)
-    );
+    const nodeData = resAnswer.data.map((_data: { nodes: string }) => JSON.parse(_data.nodes));
+    const edgesData = resAnswer.data.map((_data: { edges: string }) => JSON.parse(_data.edges));
 
     setAnsNodes(nodeData.flat(1));
     setAnsEdges(edgesData.flat(1));
@@ -88,10 +78,8 @@ export default function QuestionItemPage({ params }: Params) {
 
   // 初回ロード
   useEffect(() => {
-    return () => {
-      // サーバにリクエスト
-      fetchData();
-    };
+    // サーバにリクエスト
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -183,21 +171,15 @@ export default function QuestionItemPage({ params }: Params) {
     const res = await answerPostRequest({
       baseURL: window?.localStorage.getItem("select") as string,
       id: params.id,
-      edges: JSON.stringify(
-        ansEdges.filter((e) => e.data?.userID != session?.userId)
-      ),
-      nodes: JSON.stringify(
-        ansNodes.filter((n) => n.data.userID == session?.userId)
-      ),
+      edges: JSON.stringify(ansEdges.filter((e) => e.data?.userID != session?.userId)),
+      nodes: JSON.stringify(ansNodes.filter((n) => n.data.userID == session?.userId)),
     });
 
     // 結果
     if (res.status == "success") {
       alert("投稿できました");
     } else {
-      alert(
-        `投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`
-      );
+      alert(`投稿に失敗しました\n何度も表示される場合は開発者にお問合せください`);
     }
   };
 
@@ -206,15 +188,8 @@ export default function QuestionItemPage({ params }: Params) {
       <div>
         <div className="h1">質問</div>
       </div>
-      <div
-        className="border border-3 rounded-5 shadow border-edit-item bg-flow mx-5"
-        style={{ height: "80vh" }}
-      >
-        <FlowView
-          initialNodes={defaultNode}
-          initialEdges={defaultEdge}
-          controls
-        />
+      <div className="border border-3 rounded-5 shadow border-edit-item bg-flow mx-5" style={{ height: "80vh" }}>
+        <FlowView initialNodes={defaultNode} initialEdges={defaultEdge} controls />
       </div>
       <div className="mt-5 h1 row">
         <div className="col">コメント</div>
@@ -224,17 +199,8 @@ export default function QuestionItemPage({ params }: Params) {
           </button>
         </div>
       </div>
-      <div
-        className="border border-3 rounded-5 shadow border-edit bg-flow mx-5"
-        style={{ height: "80vh" }}
-      >
-        <DnDFlowEdit
-          getValue={getValue}
-          miniMap
-          controls
-          initialNodes={ansDefaultNode}
-          initialEdges={ansDefaultEdge}
-        />
+      <div className="border border-3 rounded-5 shadow border-edit bg-flow mx-5" style={{ height: "80vh" }}>
+        <DnDFlowEdit getValue={getValue} miniMap controls initialNodes={ansDefaultNode} initialEdges={ansDefaultEdge} />
       </div>
     </div>
   );
