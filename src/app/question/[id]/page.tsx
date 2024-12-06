@@ -171,8 +171,8 @@ export default function QuestionItemPage({ params }: Params) {
     const res = await answerPostRequest({
       baseURL: window?.localStorage.getItem("select") as string,
       id: params.id,
-      edges: JSON.stringify(ansEdges.filter((e) => e.data?.userID != session?.userId)),
-      nodes: JSON.stringify(ansNodes.filter((n) => n.data.userID == session?.userId)),
+      edges: JSON.stringify(ansEdges.filter((e) => e.data?.userID == session?.userId)),
+      nodes: JSON.stringify(ansNodes.filter((n) => n.data?.userID == session?.userId)),
     });
 
     // 結果
