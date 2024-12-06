@@ -11,12 +11,14 @@ import Link from "next/link";
  */
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true); // 開閉管理用
-  const [server, setServer] = useState(() => {
+  const [server] = useState(() => {
     // 選択しているサーバ
     if (typeof window != "undefined") {
       // 保存されている内容があれば適応する
       const serverStorage = window?.localStorage.getItem("server");
-      return serverStorage ? JSON.parse(serverStorage) : ["http://127.0.0.1:8081"];
+      return serverStorage
+        ? JSON.parse(serverStorage)
+        : ["http://127.0.0.1:8081"];
     }
   });
   const [select, setSelect] = useState(() => {

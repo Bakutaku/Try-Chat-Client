@@ -25,6 +25,7 @@ export default function Home() {
         page: page,
         size: 10,
       });
+      if (!rs) return;
       const newPosts = rs.data;
 
       //次のページがなければ
@@ -76,7 +77,12 @@ export default function Home() {
           <div>
             {posts.map((post) => (
               <Link key={post.id} href={`/question/${post.id}`}>
-                <PostItem key={post.id} userId={post.userID} title={post.title} message={post.explanation} />
+                <PostItem
+                  key={post.id}
+                  userId={post.userID}
+                  title={post.title}
+                  message={post.explanation}
+                />
               </Link>
             ))}
           </div>

@@ -10,8 +10,14 @@ interface Props {
  * サイドバーのサーバ選択欄
  */
 export default function ServerBar({ servers, onChange }: Props) {
+  if (!servers) {
+    servers = [];
+  }
   return (
-    <ul className="fs-3 bg-base-4 list-group rounded-pill server m-auto mt-2" style={{ maxHeight: "20rem", width: "4rem" }}>
+    <ul
+      className="fs-3 bg-base-4 list-group rounded-pill server m-auto mt-2"
+      style={{ maxHeight: "20rem", width: "4rem" }}
+    >
       {servers.map((_server) => (
         <div key={_server} onClick={() => onChange(_server)}>
           <ServerBarItem />
