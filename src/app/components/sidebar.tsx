@@ -11,8 +11,8 @@ import Link from "next/link";
  */
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true); // 開閉管理用 //TODO
-  const [server, setServer] = useState(["http://127.0.0.1:8081"]); // サーバ一覧
-  const [select, setSelect] = useState("http://127.0.0.1:8081"); // 選択しているサーバ
+  const [server, setServer] = useState(["http://backend:8081"]); // サーバ一覧
+  const [select, setSelect] = useState("http://backend:8081"); // 選択しているサーバ
 
   useEffect(() => {
     const serverLocal = window?.localStorage.getItem("server");
