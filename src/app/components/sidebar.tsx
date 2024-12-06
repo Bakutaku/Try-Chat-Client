@@ -11,24 +11,23 @@ import Link from "next/link";
  */
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true); // 開閉管理用
-  const [server] = useState(() => {
-    // 選択しているサーバ
-    if (typeof window != "undefined") {
-      // 保存されている内容があれば適応する
-      const serverStorage = window?.localStorage.getItem("server");
-      return serverStorage
-        ? JSON.parse(serverStorage)
-        : ["http://127.0.0.1:8081"];
+  const [server, setServer] = useState(["http://127.0.0.1:8081"]); // サーバ一覧
+  const [select, setSelect] = useState("http://127.0.0.1:8081"); // 選択しているサーバ
+
+  useEffect(() => {
+    const serverLocal = window?.localStorage.getItem("server");
+    const selectLocal = window?.localStorage.getItem("select");
+
+    if (serverLocal && selectLocal) {
+      try {
+        setServer(JSON.parse(serverLocal));
+        setSelect(selectLocal);
+      } catch {
+        alert("エラーが発生しました。");
+      }
     }
-  });
-  const [select, setSelect] = useState(() => {
-    // 選択しているサーバ
-    if (typeof window != "undefined") {
-      // 保存されている内容があれば適応する
-      const selectStorage = window?.localStorage.getItem("select");
-      return selectStorage ? selectStorage : "http://127.0.0.1:8081";
-    }
-  });
+  }, []);
+
   useEffect(() => {
     window?.localStorage.setItem("server", JSON.stringify(server));
     window?.localStorage.setItem("select", select as string);
